@@ -15,13 +15,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 @SpringBootApplication
 public class TravisprojectApplication {
     //CONSTANTS
+    static Map<String, String> env = System.getenv();
+
     private static final String ENDPOINT_HOSTNAME = "https://api.travis-ci.com";
     private static final String ENDPOINT = "/repo/mdsol%2fstudy_management/branch/develop";
-    private static final String TRAVIS_AUTH_TOKEN = "bW4Fft4w7nzAwiZR1muYXw";
+    private static final String TRAVIS_AUTH_TOKEN = env.get("TRAVIS_TOKEN");
 
 	public static void main(String[] args) {
 		SpringApplication.run(TravisprojectApplication.class, args);
