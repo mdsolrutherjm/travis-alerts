@@ -1,10 +1,17 @@
 package com.eaglesinterns.travisproject;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,7 +59,7 @@ public class TravisprojectApplication {
                 System.out.println(responseLine);
             }
 
-
+            postToSlack("this message is coming from the java application");
 
         }
         catch (MalformedURLException e) {
@@ -63,5 +70,32 @@ public class TravisprojectApplication {
         {
             System.out.println(e);
         }
+
+
 	}
+
+	private static void postToSlack(String message)
+    {
+        //Attempt to send POST request to slack plugin.
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("https://hooks.slack.com/services/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");
+        String jsonToSend = "{\'text\':\'" + message + "!\'}";
+        try{
+
+            StringEntity entity = new StringEntity(jsonToSend);
+            httpPost.setEntity(entity);
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+            CloseableHttpResponse response = client.execute(httpPost);
+
+        }
+        catch (UnsupportedEncodingException e)
+        {
+
+        }
+        catch (IOException e) {
+
+        }
+
+    }
 }
