@@ -1,6 +1,6 @@
 package com.eaglesinterns.travisproject;
 
-import jdk.nashorn.internal.parser.JSONParser;
+//import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -9,15 +9,14 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.boot.json.JsonParser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
@@ -84,14 +83,43 @@ public class TravisprojectApplication {
             {
                 System.out.println("Returned " + responseCode);
             }
-            //Fetch response
+            //Fetch response object
             BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            //JsonParser object
+            JsonParser parser = new JsonParser() {
+                @Override
+                public Map<String, Object> parseMap(String json) throws JsonParseException {
+                    return null;
+                }
 
-            while (response.readLine() != null) {
-                String Json_data = response.toString();
-            }
+                @Override
+                public List<Object> parseList(String json) throws JsonParseException {
+                    return null;
+                }
+            };
 
-            //JsonParser.parseMap(Json_data);
+            /**
+            while (response.readLine() !=null ) {
+                String jsonline = response.readLine();
+                System.out.println(jsonline);
+            }**/
+
+
+             //getting state (passed or failed) and printing
+             String state = "state";
+             Object param = state;
+             String jsonString = String.valueOf(response);
+             Map responseMap = parser.parseMap(jsonString); //map for json response
+
+             System.out.println(responseMap);
+             Object test = responseMap.get(param); //getting value of the state
+             System.out.println("State of last build: "+ test);
+             //while (response.readLine() != null) {
+             //  String Json_data = response.toString();
+             //}
+
+             //JsonParser.parseMap(Json_data);
+
 
         }
         catch (IOException e)
