@@ -48,7 +48,7 @@ public class SlackFunctions {
     }
     private void sendMessage(String json)
     {
-GIT         //Attempt to send POST request to slack plugin.
+        //Attempt to send POST request to slack plugin.
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("https://hooks.slack.com/services/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");
         String jsonToSend = json;
