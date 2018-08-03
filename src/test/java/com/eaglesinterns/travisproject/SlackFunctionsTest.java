@@ -16,5 +16,16 @@ public class SlackFunctionsTest {
         sf.sendText("Send generic message text. ");
 
     }
+    @Test
+    public void sendsPassed()
+    {
+        sf.sendPassed("Passed Branch ");
 
+    }
+    @Test
+    public void sendsFailed()
+    {
+        sf.sendFailed("Passed Branch ");
+
+    }
 }
