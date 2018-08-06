@@ -25,7 +25,7 @@ public class SlackFunctionsTest {
     @Test
     public void sendsFailed()
     {
-        sf.sendFailed("Passed Branch ");
+        sf.sendFailed(80, "mdsol/studymanagement", "feature/MCC-374748_sample_branch", "James Rutherford", "2 min 46 sec", "www.google.co.uk");
 
     }
 }

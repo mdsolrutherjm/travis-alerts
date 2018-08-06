@@ -15,27 +15,49 @@ public class SlackFunctions {
     private final String FAILED_COLOUR = "#ff0000";
     private final String FAILED_TITLE = "A test has failed!";
     private final String PASSED_TITLE = "A test has passed!";
-    private final String FAILED_DESCRIPTION = "Build [BUILD] for [SLUG_AND_BRANCH] failed.";
-    private final String PASSED_DESCRIPTION = "Build [BUILD] for [SLUG_AND_BRANCH] passed.";
-
-    public void sendFailed(String whatfailed)
+    private final String DESCRIPTION = "Build #%d %s (%s, %s)\n%s@%s";
+    private final String BUTTON_TEXT = "Review this build";
+    public void sendFailed(int buildID, String slug, String branch, String  by, String time, String buildURL)
     {
+        String failedDescription = String.format(DESCRIPTION, buildID, "failed", by, time, slug, branch);
+
         sendMessage("{\n" +
                 "    \"attachments\": [\n" +
                 "        {\n" +
-                "\t\t\t\"text\" : \""+FAILED_DESCRIPTION+"\",\n" +
+                "\t\t\t\"text\" : \""+ failedDescription +"\",\n" +
                 "            \"fallback\": \""+FAILED_TITLE+"\",\n" +
                 "            \"color\": \""+ FAILED_COLOUR+"\"\n" +
+                "            \"actions\": [\n" +
+                "                {\n" +
+                "                    \"type\": \"button\",\n" +
+                "                    \"text\": \"Review Build\",\n" +
+                "                    \"url\": \"www.google.co.uk\"\n" +
+                "                }\n" +
+                "            ]" +
                 "        }\n" +
                 "    ], \"text\": \""+FAILED_TITLE+"\"\n" +
                 "}");
+       /**sendMessage("{\n" +
+               "\"attachments\": [{\n" +
+               "    \"text\": \""+failedDescription+"\",\n" +
+               "    \"fallback\": \""+ failedDescription+"\",\n" +
+               "    \"color\": \""+FAILED_COLOUR+"\",\n" +
+               "\t\"actions\": [\n" +
+               "\t\t{\n" +
+               "\t\t\t\"type\": \"button\",\n" +
+               "\t\t\t\"text\": \""+BUTTON_TEXT+"\",\n" +
+           "\t\t\t\"url\": \""+buildURL+"\"\n" +
+               "                }\n" +
+               "            ]\n" +
+               "  }]\n" +
+               "}");*/
     }
     public void sendPassed(String whatpassed)
     {
         sendMessage("{\n" +
                 "    \"attachments\": [\n" +
                 "        {\n" +
-                "\t\t\t\"text\" : \""+PASSED_DESCRIPTION+"\",\n" +
+                "\t\t\t\"text\" : \""+DESCRIPTION+"\",\n" +
                 "            \"fallback\": \""+PASSED_TITLE+"\",\n" +
                 "            \"color\": \""+ PASSED_COLOUR+"\"\n" +
                 "        }\n" +
