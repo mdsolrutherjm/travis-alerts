@@ -89,6 +89,7 @@ public class TravisprojectApplication {
             JsonParser parser = new JsonParser() {
                 @Override
                 public Map<String, Object> parseMap(String json) throws JsonParseException {
+                    System.out.println("Json Parse Exception");
                     return null;
                 }
 
@@ -107,13 +108,30 @@ public class TravisprojectApplication {
 
              //getting state (passed or failed) and printing
              String state = "state";
-             Object param = state;
-             String jsonString = String.valueOf(response);
-             Map responseMap = parser.parseMap(jsonString); //map for json response
+            StringBuffer sb = new StringBuffer();
+            try {
 
-             System.out.println(responseMap);
-             Object test = responseMap.get(param); //getting value of the state
-             System.out.println("State of last build: "+ test);
+                String line = "";
+                while((line=response.readLine())!=null){
+                    line.trim();
+                    sb.append(line);
+                    sb.append("\n");
+
+
+                }
+                response.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+            System.out.println("Json converted to stringBuffer" + sb.toString());
+
+
+            Map responseMap = parser.parseMap(sb.toString()); //map for json response
+            //Object test = responseMap.isEmpty(); //getting value of the state
+             //System.out.println("State of last build: "+ test);
              //while (response.readLine() != null) {
              //  String Json_data = response.toString();
              //}
