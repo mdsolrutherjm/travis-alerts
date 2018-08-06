@@ -16,8 +16,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootApplication
 public class TravisprojectApplication {
@@ -126,12 +125,19 @@ public class TravisprojectApplication {
 
                 e.printStackTrace();
             }
-            System.out.println("Json converted to stringBuffer" + sb.toString());
+            System.out.println("Json converted to stringBuffer" + sb.toString().trim());
 
-
-            Map responseMap = parser.parseMap(sb.toString()); //map for json response
-            //Object test = responseMap.isEmpty(); //getting value of the state
-             //System.out.println("State of last build: "+ test);
+            Map<String, String> jsonMap = new HashMap<String, String>();
+            String lines[] = sb.toString().split("\n");
+            for (String line : lines) {
+                String elements[] = line.split(":");
+                jsonMap.put(elements[0], elements[1]);
+            }
+             //map for json response
+            String test = jsonMap.get("state"); //getting value of the state
+             System.out.println("State of last build: "+ test); //print value of state
+            System.out.println(jsonMap.entrySet());
+            System.out.println(jsonMap.size());
              //while (response.readLine() != null) {
              //  String Json_data = response.toString();
              //}
